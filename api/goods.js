@@ -23,13 +23,10 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    console.log(req.body)
-    console.log(req.body.id)
     const data = req.body
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     now.toLocaleString("ja")
 
-    console.log(now)
     const q = `insert into goods values (${new Date().getTime()}, "${data.user_id}","${data.memo}", "${data.category_id}","${data.checked}", "${now}", null)`
     connection.query(q, (err, result, fileds) => {
         if (err) throw err
