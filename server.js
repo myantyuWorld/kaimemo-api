@@ -8,13 +8,13 @@ const goodsRouter = require('./api/goods')
 const app = express();
 
 // データベース接続情報
-const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'root',
-    password: 'root',
-    database: 'kaimemo'
-});
+// const connection = mysql.createConnection({
+//     host: '127.0.0.1',
+//     port: 3306,
+//     user: 'root',
+//     password: 'root',
+//     database: 'kaimemo'
+// });
 
 // データベースに接続できたらコンソールにConnectedを表示
 connection.connect(function (err) {
@@ -26,17 +26,6 @@ app.use(express.json())
 app.use('/api/goods', goodsRouter)
 app.use(cors)
 
-
-app.get("/sample", (req, res) => {
-    res.send("sample");
-    
-    connection.query(
-        'SELECT * FROM goods',
-        (error, results) => {
-            console.log(results)
-        }
-    )
-})
     
 //listenイベントで3000番ポートでサーバーを起動する。
 //consoleで確認

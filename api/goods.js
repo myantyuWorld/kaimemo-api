@@ -3,31 +3,31 @@ const mysql = require('mysql');
 const router = express.Router()
 
 // データベース接続情報
-const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'root',
-    password: 'root',
-    database: 'kaimemo'
-});
+// const connection = mysql.createConnection({
+//     host: '127.0.0.1',
+//     port: 3306,
+//     user: 'root',
+//     password: 'root',
+//     database: 'kaimemo'
+// });
 
 
 router.get('/', (req, res) => {
     res.json("hello Nodejs#Express!")
 })
 
-router.post('/', (req, res) => {
-    const data = req.body
-    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    now.toLocaleString("ja")
+// router.post('/', (req, res) => {
+//     const data = req.body
+//     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+//     now.toLocaleString("ja")
 
-    const q = `insert into goods values (${new Date().getTime()}, "${data.user_id}","${data.memo}", "${data.category_id}","${data.checked}", "${now}", null)`
-    connection.query(q, (err, result, fileds) => {
-        if (err) throw err
+//     const q = `insert into goods values (${new Date().getTime()}, "${data.user_id}","${data.memo}", "${data.category_id}","${data.checked}", "${now}", null)`
+//     connection.query(q, (err, result, fileds) => {
+//         if (err) throw err
 
-        console.log(result)
-    })
-})
+//         console.log(result)
+//     })
+// })
 
 
 
