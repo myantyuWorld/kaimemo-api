@@ -17,10 +17,10 @@ const app = express();
 // });
 
 // データベースに接続できたらコンソールにConnectedを表示
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log('Connected');
-});
+// connection.connect(function (err) {
+//     if (err) throw err;
+//     console.log('Connected');
+// });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
 app.use('/api/goods', goodsRouter)
