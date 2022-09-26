@@ -11,43 +11,19 @@ const dbConfig = {
     password: process.env.DATABASE_PASSWORD || 'root',
     database: process.env.DATABASE_NAME || 'kaimemo'
 }
-let connection;
-
-handleDisconnect = () => {
-    console.log("INFO.CONNECT_DB: ")
-    connection = mysql.createConnection(dbConfig);
-
-    // データベースに接続できたらコンソールにConnectedを表示
-    connection.connect((err) => {
-        console.log('Database Connected!');
-        if (err) {
-            console.log('ERROR.CONNECT_DB', err)
-            setTimeout(handleDisconnect, 3000)
-        }
-    });
-
-    connection.on('error',  ((err) => {
-        console.log('ERROR.DB: ', err);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            console.log('ERROR.CONNECTION_LOST: ', err);
-            handleDisconnect();
-        } else {
-            throw err;
-        }
-    }))
-}
-
-handleDisconnect()
+var pool = mysql.createPool(dbConfig);
 
 router.get('/', (req, res) => {
     console.log("call /api/goods/")
-    connection.query(
-        'SELECT * FROM goods',
-        (error, results) => {
-            console.log(results)
-            res.json(results)
+    pool.getConnection(function(err, connection){
+        connection.query('SELECT * FROM goods', function(err, rows, fields){
+        if(err){
+            console.log('error: ', err);
+            throw err;
         }
-    )
+        console.log(rows)
+        res.json(rows)
+    });
 })
 
 // router.post('/', (req, res) => {
