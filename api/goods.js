@@ -14,24 +14,24 @@ const dbConfig = {
 var pool = mysql.createPool(dbConfig);
 
 router.get('/', (req, res) => {
-    console.log("call /api/goods/")
+    console.log("[call goods api] : GET /api/goods/")
     pool.getConnection((err, connection) => {
         connection.query(
-            'SELECT * FROM goods', 
+            `SELECT * FROM goods where user_id = "${req.query.user_id}"`, 
             ((err, rows, fields) => {
                 if(err){
                     console.log('error: ', err);
                     throw err;
                 }
-                console.log(rows)
                 res.json(rows)
                 connection.release();
             })
-        )
-    })  
-})
-
+            )
+        })  
+    })
+    
 router.post('/', (req, res) => {
+    console.log("[call goods api] : POST /api/goods/")
     const data = req.body
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     now.toLocaleString("ja")
