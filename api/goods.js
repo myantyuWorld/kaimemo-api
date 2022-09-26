@@ -2,9 +2,8 @@ const express = require('express')
 const mysql = require('mysql');
 const router = express.Router()
 
-
-
 // データベース接続情報
+// "npx heroku login" -> "npx heroku config"で確認
 const dbConfig = {
     host: process.env.DATABASE_HOST || '127.0.0.1',
     port: 3306,
