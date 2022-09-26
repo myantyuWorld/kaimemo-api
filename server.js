@@ -8,19 +8,19 @@ const goodsRouter = require('./api/goods')
 const app = express();
 
 // データベース接続情報
-// const connection = mysql.createConnection({
-//     host: '127.0.0.1',
-//     port: 3306,
-//     user: 'root',
-//     password: 'root',
-//     database: 'kaimemo'
-// });
+const connection = mysql.createConnection({
+    host: process.env.DATABASE_HOST || '127.0.0.1',
+    port: 3306,
+    user: process.env.DATABASE_USER || 'root',
+    password: process.env.DATABASE_PASSWORD || 'root',
+    database: process.env.DATABASE_NAME || 'kaimemo'
+});
 
 // データベースに接続できたらコンソールにConnectedを表示
-// connection.connect(function (err) {
-//     if (err) throw err;
-//     console.log('Connected');
-// });
+connection.connect(function (err) {
+    if (err) throw err;
+    console.log('Database Connected!');
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
 app.use('/api/goods', goodsRouter)
