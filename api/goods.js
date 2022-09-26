@@ -36,7 +36,17 @@ router.post('/', (req, res) => {
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     now.toLocaleString("ja")
 
-    const q = `insert into goods values (${new Date().getTime()}, "${data.user_id}","${data.memo}", "${data.category_id}","${data.checked}", "${now}", null)`
+    const q = `
+        insert into goods  
+        values (
+            ${new Date().getTime()}, 
+            "${data.user_id}",
+            "${data.memo}", 
+            "${data.category_id}",
+            "${data.checked}", 
+            "${now}", 
+            null)
+        `
     pool.getConnection((err, connection) => {
         connection.query(q, (err, result, fileds) => {
             if(err){
