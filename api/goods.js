@@ -15,15 +15,19 @@ var pool = mysql.createPool(dbConfig);
 
 router.get('/', (req, res) => {
     console.log("call /api/goods/")
-    pool.getConnection(function(err, connection){
-        connection.query('SELECT * FROM goods', function(err, rows, fields){
-        if(err){
-            console.log('error: ', err);
-            throw err;
-        }
-        console.log(rows)
-        res.json(rows)
-    });
+    pool.getConnection((err, connection) => {
+        connection.query(
+            'SELECT * FROM goods', 
+            ((err, rows, fields) => {
+                if(err){
+                    console.log('error: ', err);
+                    throw err;
+                }
+                console.log(rows)
+                res.json(rows)
+            })
+        )
+    })  
 })
 
 // router.post('/', (req, res) => {
