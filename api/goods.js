@@ -13,13 +13,7 @@ const connection = mysql.createConnection({
 
 
 router.get('/', (req, res) => {
-    connection.query(
-        'SELECT * FROM goods',
-        (error, results) => {
-            console.log(results)
-            res.json(results)
-        }
-    )
+    res.json("hello Nodejs#Express!")
 })
 
 router.post('/', (req, res) => {

@@ -6,7 +6,6 @@ const cors = require('cors')
 const goodsRouter = require('./api/goods')
 
 const app = express();
-const PORT = 3000
 
 // データベース接続情報
 const connection = mysql.createConnection({
@@ -41,6 +40,7 @@ app.get("/sample", (req, res) => {
     
 //listenイベントで3000番ポートでサーバーを起動する。
 //consoleで確認
+const PORT=process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log("start server")
 })
