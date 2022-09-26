@@ -2,16 +2,43 @@ const express = require('express')
 const mysql = require('mysql');
 const router = express.Router()
 
+
+
 // データベース接続情報
-// データベース接続情報
-const connection = mysql.createConnection({
+const dbConfig = {
     host: process.env.DATABASE_HOST || '127.0.0.1',
     port: 3306,
     user: process.env.DATABASE_USER || 'root',
     password: process.env.DATABASE_PASSWORD || 'root',
     database: process.env.DATABASE_NAME || 'kaimemo'
-});
+}
+let connection;
 
+handleDisconnect = () => {
+    console.log("INFO.CONNECT_DB: ")
+    connection = mysql.createConnection(dbConfig);
+
+    // データベースに接続できたらコンソールにConnectedを表示
+    connection.connect((err) => {
+        console.log('Database Connected!');
+        if (err) {
+            console.log('ERROR.CONNECT_DB', err)
+            setTimeout(handleDisconnect, 3000)
+        }
+    });
+
+    connection.on('error',  ((err) => {
+        console.log('ERROR.DB: ', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.log('ERROR.CONNECTION_LOST: ', err);
+            handleDisconnect();
+        } else {
+            throw err;
+        }
+    }))
+}
+
+handleDisconnect()
 
 router.get('/', (req, res) => {
     console.log("call /api/goods/")
@@ -23,8 +50,6 @@ router.get('/', (req, res) => {
         }
     )
 })
-
-
 
 // router.post('/', (req, res) => {
 //     const data = req.body
