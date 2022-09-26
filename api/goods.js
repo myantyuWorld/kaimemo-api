@@ -3,18 +3,28 @@ const mysql = require('mysql');
 const router = express.Router()
 
 // データベース接続情報
-// const connection = mysql.createConnection({
-//     host: '127.0.0.1',
-//     port: 3306,
-//     user: 'root',
-//     password: 'root',
-//     database: 'kaimemo'
-// });
+// データベース接続情報
+const connection = mysql.createConnection({
+    host: process.env.DATABASE_HOST || '127.0.0.1',
+    port: 3306,
+    user: process.env.DATABASE_USER || 'root',
+    password: process.env.DATABASE_PASSWORD || 'root',
+    database: process.env.DATABASE_NAME || 'kaimemo'
+});
 
 
 router.get('/', (req, res) => {
-    res.json("hello Nodejs#Express!")
+    console.log("call /api/goods/")
+    connection.query(
+        'SELECT * FROM goods',
+        (error, results) => {
+            console.log(results)
+            res.json(results)
+        }
+    )
 })
+
+
 
 // router.post('/', (req, res) => {
 //     const data = req.body
