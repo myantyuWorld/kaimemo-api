@@ -17,19 +17,19 @@ router.get('/', (req, res) => {
     console.log("[call goods api] : GET /api/goods/")
     pool.getConnection((err, connection) => {
         connection.query(
-            `SELECT * FROM goods where user_id = "${req.query.user_id}"`, 
+            `SELECT * FROM goods where user_id = "${req.query.user_id}" and deleted is null order by insert_date desc`,
             ((err, rows, fields) => {
-                if(err){
+                if (err) {
                     console.log('error: ', err);
                     throw err;
                 }
                 res.json(rows)
                 connection.release();
             })
-            )
-        })  
+        )
     })
-    
+})
+
 router.post('/', (req, res) => {
     console.log("[call goods api] : POST /api/goods/")
     const data = req.body
@@ -37,19 +37,19 @@ router.post('/', (req, res) => {
     now.toLocaleString("ja")
 
     const q = `
-        insert into goods  
-        values (
-            ${new Date().getTime()}, 
-            "${data.user_id}",
-            "${data.memo}", 
-            "${data.category_id}",
-            "${data.checked}", 
-            "${now}", 
-            null)
+    insert into goods  
+    values (
+        ${new Date().getTime()}, 
+        "${data.user_id}",
+        "${data.memo}", 
+        "${data.category_id}",
+        "${data.checked}", 
+        "${now}", 
+        null)
         `
     pool.getConnection((err, connection) => {
         connection.query(q, (err, result, fileds) => {
-            if(err){
+            if (err) {
                 console.log('error: ', err);
                 throw err;
             }
@@ -57,6 +57,69 @@ router.post('/', (req, res) => {
             connection.release()
         })
     })
+})
+
+router.put('/', (req, res) => {
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    console.log("[call goods api] : DELETE /api/goods")
+    const data = req.body
+    const q = `
+        update goods set memo = "${data.memo}", update_date = "${now}" where id= "${data.id}"  
+        `
+    pool.getConnection((err, connection) => {
+        connection.query(q, (err, result, fileds) => {
+            if (err) {
+                console.log('error: ', err);
+                throw err;
+            }
+            console.log(result)
+            connection.release()
+        })
+    })
+
+    res.json("OK")
+})
+
+router.put('/check', (req, res) => {
+    console.log("[call goods api] : DELETE /api/goods")
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const data = req.body
+    const q = `
+        update goods set checked = "1", update_date = "${now}" where id= "${data.id}"  
+        `
+    pool.getConnection((err, connection) => {
+        connection.query(q, (err, result, fileds) => {
+            if (err) {
+                console.log('error: ', err);
+                throw err;
+            }
+            console.log(result)
+            connection.release()
+        })
+    })
+
+    res.json("OK")
+})
+
+router.delete('/', (req, res) => {
+    console.log("[call goods api] : DELETE /api/goods")
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const data = req.body
+    const q = `
+        update goods set deleted = "1", update_date = "${now}" where id= "${data.id}"  
+        `
+    pool.getConnection((err, connection) => {
+        connection.query(q, (err, result, fileds) => {
+            if (err) {
+                console.log('error: ', err);
+                throw err;
+            }
+            console.log(result)
+            connection.release()
+        })
+    })
+
+    res.json("OK")
 })
 
 
