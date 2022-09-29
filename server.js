@@ -9,8 +9,8 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
-app.use('/api/goods', goodsRouter)
 app.use(cors())
+app.use('/api/goods', goodsRouter)
 
     
 //listenイベントで3000番ポートでサーバーを起動する。
