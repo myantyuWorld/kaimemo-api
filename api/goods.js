@@ -45,6 +45,7 @@ router.post('/', (req, res) => {
         "${data.category_id}",
         "${data.checked}", 
         "${now}", 
+        null, 
         null)
         `
     pool.getConnection((err, connection) => {
@@ -101,10 +102,11 @@ router.put('/check', (req, res) => {
     res.json("OK")
 })
 
-router.delete('/', (req, res) => {
+router.delete('/', (request, response) => {
     console.log("[call goods api] : DELETE /api/goods")
+    console.log(request.body)
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const data = req.body
+    const data = request.body
     const q = `
         update goods set deleted = "1", update_date = "${now}" where id= "${data.id}"  
         `
@@ -119,7 +121,7 @@ router.delete('/', (req, res) => {
         })
     })
 
-    res.json("OK")
+    response.json("OK")
 })
 
 
