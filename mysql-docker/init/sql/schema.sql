@@ -15,6 +15,7 @@ CREATE TABLE `goods` (
   `checked` tinyint(1) DEFAULT NULL,
   `insert_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
+  `deleted` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
